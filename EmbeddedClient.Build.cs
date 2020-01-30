@@ -12,6 +12,7 @@ public class EmbeddedClient : ModuleRules
 			{
 				"Programs/EmbeddedClient/Private",
 				"Runtime/Launch/Public",
+				"Developer/DesktopPlatform/Public"
 			}
 		);
 
@@ -29,6 +30,7 @@ public class EmbeddedClient : ModuleRules
                 "MessagingCommon",
                 "UdpMessaging",
 				"TcpMessaging",
+				"DesktopPlatform"
 			}
 		);
 	}

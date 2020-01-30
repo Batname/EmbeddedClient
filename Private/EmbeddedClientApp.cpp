@@ -51,7 +51,7 @@ void RunEmbeddedClientApp(const TCHAR* CommandLine) {
     // loop while the server does the rest
     while (!IsEngineExitRequested())
     {
-        UE_LOG(EmbeddedClienLog, Warning, TEXT("Hello Embedded UE4 on Raspberry PI"));
+        UE_LOG(EmbeddedClienLog, Warning, TEXT(">>> Hello Embedded UE4 on Raspberry PI"));
 
         FTicker::GetCoreTicker().Tick(FApp::GetDeltaTime());
         FPlatformProcess::Sleep(0.4f);
