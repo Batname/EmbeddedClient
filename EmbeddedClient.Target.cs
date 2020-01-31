@@ -15,6 +15,9 @@ public class EmbeddedClientTarget : TargetRules
 
 		LaunchModuleName = "EmbeddedClient";
 
+		// No editor needed
+        bBuildWithEditorOnlyData = false;
+
 		bLegalToDistributeBinary = true;
 
 		bBuildDeveloperTools = false;
@@ -28,6 +31,6 @@ public class EmbeddedClientTarget : TargetRules
 
 		bUseChecksInShipping = true;
 
-		GlobalDefinitions.Add("PLATFORM_DESKTOP=0");
+		GlobalDefinitions.Add("WITH_EDITOR=0");
 	}
 }

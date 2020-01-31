@@ -12,11 +12,19 @@
 #include "HAL/PlatformApplicationMisc.h"
 #include "HAL/PlatformCrashContext.h"
 #include "RequiredProgramMainCPPInclude.h"
+#include "Dom/JsonObject.h"
+
+// DMX
+#include "Interfaces/IDMXProtocol.h"
+#include "Interfaces/IDMXProtocolUniverse.h"
+#include "DMXProtocolTypes.h"
+
 
 #define LOCTEXT_NAMESPACE "RunEmbeddedClientApp"
 
 IMPLEMENT_APPLICATION(EmbeddedClientApp, "EmbeddedClientApp");
 DEFINE_LOG_CATEGORY(EmbeddedClienLog);
+
 
 void RunEmbeddedClientApp(const TCHAR* CommandLine) {
     // Override the stack size for the thread pool.
@@ -48,10 +56,23 @@ void RunEmbeddedClientApp(const TCHAR* CommandLine) {
     // Load Concert Sync plugins in default phase
     IPluginManager::Get().LoadModulesForEnabledPlugins(ELoadingPhase::Default);
 
+    // Setup ArtNetReciever
+    static const uint16 UniverseValue = 0;
+    IDMXProtocol* DMXProtocol = IDMXProtocol::Get("Art-Net").Get();
+    FJsonObject UniverseSettings;
+    UniverseSettings.SetNumberField(TEXT("UniverseID"), UniverseValue);
+    UniverseSettings.SetNumberField(TEXT("PortID"), 0);
+    DMXProtocol->AddUniverse(UniverseSettings);
+
+    TSharedPtr<IDMXProtocolUniverse, ESPMode::ThreadSafe> Universe = DMXProtocol->GetUniverseById(UniverseValue);
+
+
     // loop while the server does the rest
     while (!IsEngineExitRequested())
     {
-        UE_LOG(EmbeddedClienLog, Warning, TEXT(">>> Hello Embedded UE4 on Raspberry PI"));
+        TSharedPtr<FDMXBuffer> InputDMXBuffer = Universe->GetInputDMXBuffer();
+        const TArray<uint8>& Buffer = InputDMXBuffer->GetDMXData();
+        UE_LOG(EmbeddedClienLog, Warning, TEXT("DMX Input: [1] 0x%02x, [1] 0x%02x, [1] 0x%02x"), Buffer[0], Buffer[1], Buffer[2]);
 
         FTicker::GetCoreTicker().Tick(FApp::GetDeltaTime());
         FPlatformProcess::Sleep(0.4f);
