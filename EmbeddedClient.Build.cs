@@ -16,15 +16,6 @@ public class EmbeddedClient : ModuleRules
 			}
 		);
 
-
-        PrivateIncludePaths.AddRange
-        (
-            new string[]
-            {
-                "Developer/DesktopPlatform/Public"
-            }
-        );
-
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -32,7 +23,6 @@ public class EmbeddedClient : ModuleRules
 				"CoreUObject",
 				"ApplicationCore",
 				"HTTP",
-				"Json",
 				"Projects",
 				"LauncherPlatform",
 				"MessageLog",
@@ -40,8 +30,7 @@ public class EmbeddedClient : ModuleRules
                 "MessagingCommon",
                 "UdpMessaging",
 				"TcpMessaging",
-				"DesktopPlatform",
-				"DMXProtocol",
+				"DesktopPlatform"
 			}
 		);
 	}

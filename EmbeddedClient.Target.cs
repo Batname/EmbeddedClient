@@ -32,5 +32,7 @@ public class EmbeddedClientTarget : TargetRules
 		bUseChecksInShipping = true;
 
 		GlobalDefinitions.Add("WITH_EDITOR=0");
+
+		GlobalDefinitions.Add("PLATFORM_DESKTOP=0");
 	}
 }
