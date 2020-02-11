@@ -76,6 +76,8 @@ void RunEmbeddedClientApp(const TCHAR* CommandLine) {
         FPlatformProcess::Sleep(0.4f);
     }
 
+	GPIORuntime.ReleasePins();
+
     FEngineLoop::AppPreExit();
     FModuleManager::Get().UnloadModulesAtShutdown();
     FTaskGraphInterface::Shutdown();

@@ -18,7 +18,6 @@ public class EmbeddedClient : ModuleRules
 		);
 
 		PrivateIncludePathModuleNames.Add("GPIORuntime");
-		//PrivateIncludePaths.Add(Path.Combine(EngineDirectory, "Plugins/PaspberryPi/GPIO/Source/GPIORuntime/Public"));
 
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
