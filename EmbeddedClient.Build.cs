@@ -1,6 +1,7 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class EmbeddedClient : ModuleRules
 {
@@ -12,9 +13,12 @@ public class EmbeddedClient : ModuleRules
 			{
 				"Programs/EmbeddedClient/Private",
 				"Runtime/Launch/Public",
-				"Developer/DesktopPlatform/Public"
+				"Developer/DesktopPlatform/Public",
 			}
 		);
+
+		PrivateIncludePathModuleNames.Add("GPIORuntime");
+		//PrivateIncludePaths.Add(Path.Combine(EngineDirectory, "Plugins/PaspberryPi/GPIO/Source/GPIORuntime/Public"));
 
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
@@ -30,6 +34,7 @@ public class EmbeddedClient : ModuleRules
                 "MessagingCommon",
                 "UdpMessaging",
 				"TcpMessaging",
+				"GPIORuntime",
 				"DesktopPlatform"
 			}
 		);

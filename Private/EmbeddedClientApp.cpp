@@ -16,6 +16,9 @@
 
 #include "PlatformInfo.h"
 
+#include "IGPIORuntime.h"
+#include "GPIORuntimePin.h"
+
 #define LOCTEXT_NAMESPACE "RunEmbeddedClientApp"
 
 IMPLEMENT_APPLICATION(EmbeddedClientApp, "EmbeddedClientApp");
@@ -44,6 +47,7 @@ void RunEmbeddedClientApp(const TCHAR* CommandLine) {
     // Load modules
     FModuleManager::Get().LoadModule(TEXT("UdpMessaging"));
     FModuleManager::Get().LoadModule(TEXT("TcpMessaging"));
+    FModuleManager::Get().LoadModule(TEXT("GPIORuntime"));
 
     // Load internal Concert plugins in the pre-default phase
     IPluginManager::Get().LoadModulesForEnabledPlugins(ELoadingPhase::PreDefault);
@@ -51,10 +55,23 @@ void RunEmbeddedClientApp(const TCHAR* CommandLine) {
     // Load Concert Sync plugins in default phase
     IPluginManager::Get().LoadModulesForEnabledPlugins(ELoadingPhase::Default);
 
+	IGPIORuntime& GPIORuntime = IGPIORuntime::Get();
+	TSharedPtr<FGPIORuntimePin> Pin = GPIORuntime.AddPin(24, EGPIORuntimePinDirection::E_OUT);
+	if (!Pin.IsValid())
+	{
+		UE_LOG(EmbeddedClienLog, Warning, TEXT("Pin is not valid"));
+	}
+
     // loop while the server does the rest
+	uint8 LevelToSet = 1;
     while (!IsEngineExitRequested())
     {
-        UE_LOG(EmbeddedClienLog, Warning, TEXT("Hello UE4 embedded"));
+		if (Pin.IsValid())
+		{
+			LevelToSet ^= 1;
+			Pin->SetLevel(LevelToSet);
+		}
+
         FTicker::GetCoreTicker().Tick(FApp::GetDeltaTime());
         FPlatformProcess::Sleep(0.4f);
     }
